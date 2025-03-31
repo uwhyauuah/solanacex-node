@@ -2,6 +2,9 @@
   "name": "solanacex-node",
   "version": "1.0.0",
   "description": "",
+  "engines": {
+    "node": "22.13.1"
+  },
   "main": "src/app.js",
   "scripts": {
     "start": "node src/app.js",
