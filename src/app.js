@@ -27,6 +27,11 @@ app.use('/balances', balanceRoutes);
 app.use('/api', profileRoutes);
 app.use('/trade', tradeRoutes);
 
+
+app.get('/', (req, res) => {
+    res.send('Hello World');
+});
+
 // Socket.IO connection handling
 io.on('connection', (socket) => {
     console.log('Client connected:', socket.id);
