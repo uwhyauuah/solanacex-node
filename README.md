@@ -89,125 +89,19 @@ Content-Type: application/json
 }
 ```
 
-#### Get Trade History
+#### Buy SOL
 ```http
-GET /trade/history
+POST /trade/buy-sol
 Authorization: Bearer your_jwt_token
-```
+Content-Type: application/json
 
-#### Get Trade Details
-```http
-GET /trade/:id
-Authorization: Bearer your_jwt_token
-```
-
-### Profile
-
-#### Get User Profile
-```http
-GET /profile
-Authorization: Bearer your_jwt_token
-```
-
-## Database Schema
-
-### Users Table
-- id (UUID, primary key)
-- email (string, unique)
-- password_hash (string)
-- solana_public_key (string)
-- created_at (timestamp)
-- updated_at (timestamp)
-
-### User Balances Table
-- id (UUID, primary key)
-- email (string, foreign key)
-- balances (jsonb)
-- created_at (timestamp)
-- updated_at (timestamp)
-
-### Trades Table
-- id (UUID, primary key)
-- email (string, foreign key)
-- public_key (string)
-- type (enum: 'SOL_SELL', 'SOL_BUY')
-- sol_amount (numeric)
-- usdt_amount (numeric)
-- price (numeric)
-- previous_balance (jsonb)
-- new_balance (jsonb)
-- status (enum: 'PENDING', 'COMPLETED', 'FAILED')
-- created_at (timestamp)
-- updated_at (timestamp)
-
-## Security Features
-
-1. JWT Authentication
-2. Password Hashing
-3. Row Level Security (RLS) in Supabase
-4. Input Validation
-5. Error Handling
-
-## Error Responses
-
-All endpoints may return the following error responses:
-
-```json
 {
-    "error": "Error message",
-    "details": "Detailed error information (if available)"
+    "email": "user@example.com",
+    "token": "your_jwt_token",
+    "solAmount": 1.5,
+    "price": 100.50
 }
 ```
 
-Common HTTP Status Codes:
-- 200: Success
-- 400: Bad Request
-- 401: Unauthorized
-- 403: Forbidden
-- 404: Not Found
-- 500: Internal Server Error
-
-## Development
-
-### Project Structure
+#### Get Trade History
 ```
-src/
-├── config/
-│   ├── config.js
-│   └── supabase.js
-├── database/
-│   └── migrations/
-├── middleware/
-│   └── authMiddleware.js
-├── routes/
-│   ├── authRoutes.js
-│   ├── profileRoutes.js
-│   └── tradeRoutes.js
-├── services/
-│   ├── supabaseService.js
-│   └── monitoringService.js
-└── app.js
-```
-
-### Running Tests
-```bash
-npm test
-```
-
-### Code Style
-The project uses ESLint for code linting. Run:
-```bash
-npm run lint
-```
-
-## Contributing
-
-1. Fork the repository
-2. Create your feature branch
-3. Commit your changes
-4. Push to the branch
-5. Create a new Pull Request
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details. 

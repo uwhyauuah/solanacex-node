@@ -85,6 +85,87 @@ router.post('/sell-sol', validateToken, async (req, res) => {
     }
 });
 
+router.post('/buy-sol', validateToken, async (req, res) => {
+    try {
+        const { email, token, solAmount, price } = req.body;
+
+        if (!email || !token || !solAmount || !price) {
+            return res.status(400).json({ 
+                error: 'Email, token, SOL amount, and price are required' 
+            });
+        }
+
+        // Validate solAmount and price are positive numbers
+        if (isNaN(solAmount) || solAmount <= 0) {
+            return res.status(400).json({ 
+                error: 'SOL amount must be a positive number' 
+            });
+        }
+
+        if (isNaN(price) || price <= 0) {
+            return res.status(400).json({ 
+                error: 'Price must be a positive number' 
+            });
+        }
+
+        // Get user's current balance
+        const userData = await supabaseService.getUserBalance(email);
+        if (!userData) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        // Calculate required USDT amount
+        const requiredUsdt = solAmount * price;
+
+        // Check if user has enough USDT
+        if (!userData.balances.usdt || userData.balances.usdt < requiredUsdt) {
+            return res.status(400).json({ 
+                error: 'Insufficient USDT balance',
+                currentBalance: userData.balances.usdt,
+                requiredAmount: requiredUsdt
+            });
+        }
+
+        // Update user balances
+        const newBalances = {
+            sol: (userData.balances.sol || 0) + solAmount,
+            usdt: userData.balances.usdt - requiredUsdt
+        };
+
+        await supabaseService.updateUserBalance(email, newBalances);
+
+        // Create trade record
+        await supabaseService.createTrade({
+            email,
+            public_key: userData.solana_public_key,
+            type: 'SOL_BUY',
+            sol_amount: solAmount,
+            usdt_amount: requiredUsdt,
+            price: price,
+            previous_balance: userData.balances,
+            new_balance: newBalances,
+            status: 'COMPLETED'
+        });
+
+        res.json({
+            message: 'SOL bought successfully',
+            trade: {
+                solAmount,
+                usdtAmount: requiredUsdt,
+                price: price,
+                newBalances
+            }
+        });
+
+    } catch (error) {
+        console.error('Buy SOL error:', error);
+        res.status(500).json({ 
+            error: 'Internal server error',
+            details: error.message 
+        });
+    }
+});
+
 // Get user's trade history
 router.get('/history', validateToken, async (req, res) => {
     try {
