@@ -1,9 +1,7 @@
 const express = require('express');
-const app = express();
+const cors = require('cors');
 const http = require('http');
-const server = http.createServer(app);
 const { Server } = require('socket.io');
-const io = new Server(server);
 const config = require('./config/config');
 const monitoringService = require('./services/monitoringService');
 const authRoutes = require('./routes/authRoutes');
@@ -11,7 +9,21 @@ const balanceRoutes = require('./routes/balanceRoutes');
 const profileRoutes = require('./routes/profileRoutes');
 const tradeRoutes = require('./routes/tradeRoutes');
 
+const app = express();
+const server = http.createServer(app);
+const io = new Server(server);
 
+// CORS configuration
+const corsOptions = {
+    origin: ['http://localhost:3000', 'http://localhost:5173',"*"], // Add your frontend URLs
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true,
+    maxAge: 86400 // 24 hours
+};
+
+// Apply CORS middleware
+app.use(cors(corsOptions));
 
 // Middleware
 app.use(express.json());
@@ -22,7 +34,6 @@ app.use('/auth', authRoutes);
 app.use('/balances', balanceRoutes);
 app.use('/api', profileRoutes);
 app.use('/trade', tradeRoutes);
-
 
 app.get('/', (req, res) => {
     res.send('Hello World');
@@ -60,4 +71,6 @@ process.on('SIGINT', () => {
 // Start the server
 server.listen(config.port, () => {
     console.log(`Server is running on http://localhost:${config.port}`);
-}); 
+});
+
+module.exports = app; 
