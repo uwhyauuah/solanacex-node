@@ -13,11 +13,11 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
 
-// CORS configuration
+// CORS configuration for all origins
 const corsOptions = {
-    origin: ['http://localhost:3000', 'http://localhost:5173',"*"], // Add your frontend URLs
+    origin: '*', // Allow all origins
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept'],
     credentials: true,
     maxAge: 86400 // 24 hours
 };
