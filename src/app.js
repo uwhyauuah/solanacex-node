@@ -1,6 +1,9 @@
 const express = require('express');
+const app = express();
 const http = require('http');
+const server = http.createServer(app);
 const { Server } = require('socket.io');
+const io = new Server(server);
 const config = require('./config/config');
 const monitoringService = require('./services/monitoringService');
 const authRoutes = require('./routes/authRoutes');
@@ -8,14 +11,7 @@ const balanceRoutes = require('./routes/balanceRoutes');
 const profileRoutes = require('./routes/profileRoutes');
 const tradeRoutes = require('./routes/tradeRoutes');
 
-const app = express();
-const server = http.createServer(app);
-const io = new Server(server, {
-    cors: {
-        origin: "*",
-        methods: ["GET", "POST"]
-    }
-});
+
 
 // Middleware
 app.use(express.json());
