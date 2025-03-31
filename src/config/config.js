@@ -14,7 +14,7 @@ for (const envVar of requiredEnvVars) {
 }
 
 module.exports = {
-    port: process.env.PORT || 3000,
+    port: 8080,
     supabase: {
         url: process.env.SUPABASE_URL,
         anonKey: process.env.SUPABASE_ANON_KEY
