@@ -88,19 +88,17 @@ router.post('/login', async (req, res) => {
             // Update user token
             await supabaseService.updateUserToken(email, token, tokenExpiresAt);
 
-            res.json({
-                message: 'Login successful',
-                user: authData.user,
-                session: authData.session,
-                token,
-                token_expires_at: tokenExpiresAt,
-                balances: userData.balances,
-                solana_public_key: userData.solana_public_key
-            });
-        } catch (error) {
-            console.error('Login data error:', error);
-            if (error.code === 'PGRST116') {
-                // User exists in auth but not in user_balances
+            if(userData.length > 0) {
+                res.json({
+                    message: 'Login successful',
+                    user: authData.user,
+                    session: authData.session,
+                    token,
+                    token_expires_at: tokenExpiresAt,
+                    balances: userData[0].balances,
+                    solana_public_key: userData.solana_public_key
+                });
+            }else{
                 const { publicKey, privateKey } = generateSolanaKeyPair();
                 
                 await supabaseService.createUserBalance({
@@ -121,9 +119,12 @@ router.post('/login', async (req, res) => {
                     balances: { sol: 0, usdt: 0 },
                     solana_public_key: publicKey
                 });
-            } else {
-                throw error;
             }
+
+            
+        } catch (error) {
+            console.error('Login data error:', error);
+            throw error;
         }
     } catch (error) {
         console.error('Login error:', error);
