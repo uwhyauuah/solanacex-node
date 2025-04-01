@@ -181,29 +181,29 @@ router.post('/history', validateToken, async (req, res) => {
     }
 });
 
-// Get specific trade details
-router.get('/:id', validateToken, async (req, res) => {
-    try {
-        const { id } = req.params;
-        const trade = await supabaseService.getTradeById(id);
+// // Get specific trade details
+// router.get('/:id', validateToken, async (req, res) => {
+//     try {
+//         const { id } = req.params;
+//         const trade = await supabaseService.getTradeById(id);
         
-        if (!trade) {
-            return res.status(404).json({ error: 'Trade not found' });
-        }
+//         if (!trade) {
+//             return res.status(404).json({ error: 'Trade not found' });
+//         }
 
-        // Check if the trade belongs to the user
-        if (trade.email !== req.user.email) {
-            return res.status(403).json({ error: 'Unauthorized access' });
-        }
+//         // Check if the trade belongs to the user
+//         if (trade.email !== req.user.email) {
+//             return res.status(403).json({ error: 'Unauthorized access' });
+//         }
 
-        res.json(trade);
-    } catch (error) {
-        console.error('Get trade details error:', error);
-        res.status(500).json({ 
-            error: 'Internal server error',
-            details: error.message 
-        });
-    }
-});
+//         res.json(trade);
+//     } catch (error) {
+//         console.error('Get trade details error:', error);
+//         res.status(500).json({ 
+//             error: 'Internal server error',
+//             details: error.message 
+//         });
+//     }
+// });
 
 module.exports = router; 

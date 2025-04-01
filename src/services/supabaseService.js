@@ -145,11 +145,9 @@ class SupabaseService {
                 .select('*')
                 .eq('email', email)
                 .order('created_at', { ascending: false });
+                console.log(data);
+                console.log("GGG");
 
-            if (error) {
-                console.error('Get user trades error:', error);
-                throw error;
-            }
             return data;
         } catch (error) {
             console.error('Get user trades error:', error);
