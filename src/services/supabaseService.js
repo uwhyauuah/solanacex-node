@@ -6,13 +6,9 @@ class SupabaseService {
             const { data, error } = await supabase
                 .from('user_balances')
                 .select('*')
-                .eq('email', email)
-                .single();
+                .eq('email', email);
 
-            if (error) {
-                console.error('Get user balance error:', error);
-                throw error;
-            }
+            
             return data;
         } catch (error) {
             console.error('Get user balance error:', error);
