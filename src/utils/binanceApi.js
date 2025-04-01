@@ -20,7 +20,7 @@ class BinanceApi {
             });
 
             // Get the most recent candle
-            const klineData = response.data[0];
+            const klineData = response.data;
 
             // Format the data
             return klineData;
