@@ -173,6 +173,25 @@ class SupabaseService {
             throw error;
         }
     }
+
+    async getTransactions(email, publicKey) {
+        try {
+            const { data, error } = await supabase
+                .from('transactions')
+                .select('*')
+                .eq('email', email)
+                .eq('public_key', publicKey);
+
+            if (error) {
+                console.error('Get transactions error:', error);
+                throw error;
+            }
+            return data;
+        } catch (error) {
+            console.error('Get transactions error:', error);
+            throw error;
+        }
+    }
 }
 
-module.exports = new SupabaseService(); 
+module.exports = new SupabaseService();

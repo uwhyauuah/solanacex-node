@@ -24,7 +24,7 @@ module.exports = {
         expiresIn: '24h'
     },
     monitoring: {
-        balanceInterval: 5000,
+        balanceInterval: 50000,
         priceInterval: 5000
     }
 }; 

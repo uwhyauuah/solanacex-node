@@ -6,6 +6,7 @@ const config = require('./config/config');
 const monitoringService = require('./services/monitoringService');
 const authRoutes = require('./routes/authRoutes');
 const balanceRoutes = require('./routes/balanceRoutes');
+const transactionRoutes = require('./routes/transactionRoutes');
 const profileRoutes = require('./routes/profileRoutes');
 const tradeRoutes = require('./routes/tradeRoutes');
 
@@ -33,6 +34,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/auth', authRoutes);
 app.use('/balances', balanceRoutes);
 app.use('/api', profileRoutes);
+app.use('/transactions', transactionRoutes);
 app.use('/trade', tradeRoutes);
 
 app.get('/', (req, res) => {
