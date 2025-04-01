@@ -107,10 +107,8 @@ class MonitoringService {
             this.solKlinesPrice = solKlines;
             
             if (this.solKlinesPrice) {
-                io.emit('priceUpdate', {
-                    timestamp: new Date().toISOString(),
-                    data: this.solKlinesPrice
-                });
+                io.emit('priceUpdate',  this.solKlinesPrice
+                );
             }
         } catch (error) {
             console.error('Error monitoring price:', error);
