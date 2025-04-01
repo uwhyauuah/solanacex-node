@@ -167,7 +167,7 @@ router.post('/buy-sol', validateToken, async (req, res) => {
 });
 
 // Get user's trade history
-router.get('/history', validateToken, async (req, res) => {
+router.post('/history', validateToken, async (req, res) => {
     try {
         const { email } = req.user;
         const trades = await supabaseService.getUserTrades(email);
