@@ -9,7 +9,7 @@ router.post('/profile', validateToken, async (req, res) => {
         const { email } = req.user;
         
         // Get user data from database
-        const userData = await supabaseService.getUserBalance(email)[0];
+        const userData = await supabaseService.getUserBalance(email);
         
         if (userData.length == 0) {
             return res.status(404).json({ error: 'User not found' });
