@@ -87,15 +87,14 @@ router.post('/login', async (req, res) => {
             
             // Update user token
             await supabaseService.updateUserToken(email, token, tokenExpiresAt);
-
-            if(userData.length > 0) {
+            if(userData != undefined) {
                 res.json({
                     message: 'Login successful',
                     user: authData.user,
                     session: authData.session,
                     token,
                     token_expires_at: tokenExpiresAt,
-                    balances: userData[0].balances,
+                    balances: userData.balances,
                     solana_public_key: userData.solana_public_key
                 });
             }else{

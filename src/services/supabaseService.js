@@ -9,7 +9,7 @@ class SupabaseService {
                 .eq('email', email);
 
             
-            return data;
+            return data[0];
         } catch (error) {
             console.error('Get user balance error:', error);
             throw error;
